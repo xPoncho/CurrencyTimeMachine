@@ -1,0 +1,4 @@
+rootProject.name = 'CurrencyTimeMachine'
+
+include "cbrRate"
+include "currencyRateClient"
