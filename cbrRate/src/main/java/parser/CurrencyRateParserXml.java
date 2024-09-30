@@ -9,7 +9,6 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
 
 import javax.xml.XMLConstants;
 import javax.xml.parsers.DocumentBuilder;
@@ -62,8 +61,6 @@ public class CurrencyRateParserXml implements CurrencyRateParser{
                 }
 
             } catch (IOException e) {
-                throw new RuntimeException(e);
-            } catch (SAXException e) {
                 throw new RuntimeException(e);
             }
 
