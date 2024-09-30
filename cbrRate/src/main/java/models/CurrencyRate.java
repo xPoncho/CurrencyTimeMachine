@@ -16,8 +16,8 @@ import lombok.experimental.FieldDefaults;
 public class CurrencyRate {
     String numCode;
     String charCode;
-    int nominal;
+    String nominal;
     String name;
-    double value;
-    double vunitRate;
+    String value;
+    String vunitRate;
 }
