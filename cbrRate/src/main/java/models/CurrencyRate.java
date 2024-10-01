@@ -8,6 +8,8 @@ import lombok.Builder;
 import lombok.Value;
 import lombok.experimental.FieldDefaults;
 
+import java.math.BigDecimal;
+
 
 @Builder
 @AllArgsConstructor(onConstructor_ = @__(@JsonCreator))

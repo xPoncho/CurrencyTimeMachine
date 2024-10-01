@@ -9,12 +9,14 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
 
 import javax.xml.XMLConstants;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.IOException;
 import java.io.StringReader;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -49,19 +51,19 @@ public class CurrencyRateParserXml implements CurrencyRateParser{
                         Element element = (Element) node;
 
                         var rate = CurrencyRate.builder()
-                                .numCode(element.getElementsByTagName("NumCode").item(0).getTextContent())
-                                .charCode(element.getElementsByTagName("CharCode").item(0).getTextContent())
-                                .nominal(element.getElementsByTagName("Nominal").item(0).getTextContent())
-                                .name(element.getElementsByTagName("Name").item(0).getTextContent())
-                                .value(element.getElementsByTagName("Value").item(0).getTextContent())
-                                .vunitRate(element.getElementsByTagName("VinitRate").item(0).getTextContent())
+                                .numCode(getTagValue(element, "NumCode"))
+                                .charCode(getTagValue(element, "CharCode"))
+                                .nominal(getTagValue(element, "Nominal"))
+                                .name(getTagValue(element, "Name"))
+                                .value(getTagValue(element, "Value"))
+                                .vunitRate(getTagValue(element, "VunitRate"))
                                 .build();
                         rates.add(rate);
                     }
                 }
 
-            } catch (IOException e) {
-                throw new RuntimeException(e);
+            } catch (IOException | SAXException e) {
+                throw new CurrencyRateParsingException("Error parsing XML", e);
             }
 
         } catch (Exception e) {
@@ -70,4 +72,23 @@ public class CurrencyRateParserXml implements CurrencyRateParser{
         }
         return rates;
     }
+
+    private String getTagValue(Element element, String tagName) {
+        NodeList nodeList = element.getElementsByTagName(tagName);
+        return nodeList.getLength() > 0
+                ? nodeList.item(0).getTextContent()
+                : null;  // Или вернуть "" или дефолтное значение
+    }
+
+    private CurrencyRate parseValute(Element element) {
+        return CurrencyRate.builder()
+                .numCode(getTagValue(element, "NumCode"))
+                .charCode(getTagValue(element, "CharCode"))
+                .nominal(getTagValue(element, "Nominal"))
+                .name(getTagValue(element, "Name"))
+                .value(getTagValue(element, "Value"))
+                .vunitRate(getTagValue(element, "VunitRate"))
+                .build();
+    }
+
 }
